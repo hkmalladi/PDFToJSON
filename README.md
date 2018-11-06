@@ -18,7 +18,7 @@ The utility is developed using Python 2.7 and will also work with Python 3 with 
 1. It requires the heading to be on a separate line and cannot process files where headings are embedded in the paragraph.
 2. In all situations but the first two mentioned above, the section-subsection hierarchy will not be preserved.
 
-### The utility is immune to the following:
+### The utility handles the following:
 1. The headings can differ from the table of contents in case and punctuation marks such as colons or periods.
 2. The heading can be split in two lines in the document.
 3. The heading can have any preceeding or trailing spaces or new lines.
@@ -111,3 +111,11 @@ This utility works in 4 basic steps:
 2. Construct a tree using the headings that preserve the section-subsection relationships.
 3. Iterate over all the headings and search for them in the file. All the text following it, till the next heading is its corresponding content. Construct a heading - content map.
 4. Use the tree generated in step 2 and the map from step 3 to assemble the JSON.
+
+## Ongoing Work:
+
+The exact parameter tuning for the summarization based approach is still being carried out. For example, a summary of 450 statements precisely outputs the table of contents for the surface-pro-4-user-guide-EN.pdf file but a summary of 400 statements does not. Also, Luhn's algorithm appears to work better than TextRank or LexRank.
+
+## Work to be done:
+
+The ultimate general case can be approached using a trained classifier. No such classifier exists that will work for this particular usecase. A classifier using naive bayes or KNN, trained on a LaTeX-generated pdf document dataset (using the pyPDF2-extracted headings) can be used to train the model. The fact that pyPDF2 can effectively identify headings in LaTeX-generated documents greatly simplifies data preprocessing efforts.
