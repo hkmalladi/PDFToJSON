@@ -1,3 +1,4 @@
+import re
 from configuration import *
 from anytree import Node, RenderTree
 import string
@@ -45,12 +46,12 @@ def get_content_from_headings(list_of_headings, file):
                 next_line = (next_line.lower().rstrip().lstrip()).translate(None, string.punctuation)
             else:
                 next_line = ''
-            if line == (heading.lower()).translate(None, string.punctuation) or (line + ' ' + next_line) == (heading.lower()).translate(None, string.punctuation) :
+            if line == str(heading.lower()).translate(None, string.punctuation) or (line + ' ' + next_line) == str(heading.lower()).translate(None, string.punctuation) :
                 if retries == 0:
                     heading_found = True
                 else:
                     retries -= 1
-            elif next_heading_exists and (line == (next_heading.lower()).translate(None, string.punctuation) or (line + ' ' + next_line) == (next_heading.lower()).translate(None, string.punctuation)):
+            elif next_heading_exists and (line == str(next_heading.lower()).translate(None, string.punctuation) or (line + ' ' + next_line) == str(next_heading.lower()).translate(None, string.punctuation)):
                 if nh_retries == 0:
                     next_heading_found = True
                 else:
@@ -83,3 +84,42 @@ def build_tree_from_headings(list_of_headings):
             section = Node(heading.rstrip().lstrip(), root)
             section_list.append(section)
     return root
+
+def regexp_based_heading_search():
+    print 'Outlines based search could not detect a table of contents. Looking for headings using regular expressions.'
+    list_of_headings = []
+    pattern = re.compile(TOC_REGEXP)
+    with open(NOSPACES_FILENAME,'r') as file:
+        lines = file.readlines()
+        for line in lines:
+            if pattern.match(str(line)):
+                m = re.search(TOC_REGEXP_WITHOUT_PAGE_NO, line)
+                if m:
+                    found = m.group(1)
+                    list_of_headings.append(found)
+
+    tree_of_headings = build_tree_from_headings(list_of_headings)
+    return tree_of_headings, list_of_headings
+
+def outlines_based_heading_search(toc):
+    print 'Outlines based search detected a table of contents. Going ahead with that.'
+    root = Node('ROOT')
+    list_of_headings = []
+    tree_of_headings, list_of_headings  = generate_heading_tree_from_outlines(toc, root, list_of_headings)
+#    print_tree(tree_of_headings)
+    return tree_of_headings, list_of_headings
+
+def generate_heading_tree_from_outlines(toc, root, list_of_headings):
+    for iter in range(0, len(toc)):
+        if not isinstance(toc[iter], list): # Create a node for each section heading.
+            node = Node(toc[iter]['/Title'].rstrip().lstrip(), root)
+            list_of_headings.append(toc[iter]['/Title'])
+        else: # If there are a list of headings, they are subheadings of the previous heading. Recur on that.
+            node, list_of_headings_output = generate_heading_tree_from_outlines(toc[iter], node, list_of_headings)
+            node.parent = root
+            list_of_headings = list_of_headings_output
+    return root, list_of_headings
+
+def print_tree(tree):
+    for pre, fill, node in RenderTree(tree):
+         print("%s%s" % (pre, node.name))
