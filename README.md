@@ -36,7 +36,72 @@ print_tree(tree)
 When this is run on the surface-pro-4-user-guide-EN.pdf file, the output is the following:
 
 ```
-
+ROOT
+├── About this guide
+├── Meet Surface Pro 4
+├── Set up your Surface Pro 4
+│   ├── CHARGE YOUR SURFACE PRO 4
+│   ├── CONNECT THE COVER
+│   └── SET UP YOUR SURFACE PRO 4
+├── The basics
+│   ├── POWER AND CHARGING
+│   │   ├── Check the battery level
+│   │   ├── Lock screen
+│   │   ├── Desktop taskbar
+│   │   └── Make your battery last
+│   └── TOUCH, KEYBOARD, PEN, AND MOUSE
+├── Keep your Surface up to date
+├── Get online
+│   └── BROWSING TIPS
+├── Accounts and signing in
+│   ├── USE THE SIGN-IN SCREEN
+│   ├── USE WINDOWS HELLO TO SIGN IN
+│   └── SIGN OUT
+├── Get to know Windows 10
+│   ├── GO TO START
+│   ├── ACTION CENTER
+│   ├── SEARCH
+│   ├── TASK VIEW AND VIRTUAL DESKTOPS
+│   └── SETTINGS
+├── Type Cover for Surface Pro 4 keyboard and touchpad
+├── Storage and OneDrive
+│   └── ONEDRIVE
+│       └── Save files you're working on to OneDrive
+├── Surface Pen and OneNote
+│   ├── SURFACE PEN FEATURES
+│   ├── PAIR THE PEN WITH YOUR SURFACE
+│   ├── TRY OUT FEATURES BUILT IN TO THE TOP BUTTON OF THE PEN
+│   └── GET ACQUAINTED WITH ONENOTE
+│       └── Send a page or share a notebook
+├── Connect monitors, accessories, and other devices
+│   ├── SET UP YOUR WORKSPACE WITH SURFACE DOCK
+│   └── CONNECT OR PROJECT TO A MONITOR, SCREEN, OR OTHER DISPLAY
+├── Cameras and the Camera app
+│   └── VIEW PHOTOS AND VIDEOS
+├── Apps on your Surface Pro 4
+│   ├── THE SURFACE APP
+│   └── GET MORE APPS
+├── Personalization and settings
+│   ├── WINDOWS SETTINGS
+│   ├── ACTION CENTER
+│   ├── CORTANA
+│   ├── SURFACE APP
+│   ├── SYNC YOUR SETTINGS
+│   └── CHANGE SETTINGS IN WINDOWS APPS
+├── Accessibility
+│   ├── EASE OF ACCESS OPTIONS FOR SURFACE
+│   ├── OTHER OPTIONS
+│   └── CUSTOMIZE THE SIGN-IN SCREEN
+├── Care and cleaning
+│   ├── TOUCHSCREEN CARE
+│   ├── COVER AND KEYBOARD CARE
+│   └── POWER CORD CARE
+├── Registration, repair, and warranty
+│   ├── REGISTER YOUR SURFACE
+│   ├── REPAIR
+│   ├── WARRANTY
+│   └── SAFETY AND REGULATORY INFORMATION
+└── More help
 ```
 
 ## Inner Workings:
