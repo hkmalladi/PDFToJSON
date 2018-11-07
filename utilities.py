@@ -3,7 +3,14 @@ from configuration import *
 from anytree import Node, RenderTree
 import string
 from copy import deepcopy
+import os
 
+def remove_spaces_from_text_file(filename, output_filename):
+    with open(os.path.splitext(filename)[0] + '.txt','r') as file:
+        with open(output_filename,'w') as file2:
+            for line in file.readlines():
+                if not line.isspace():
+                    file2.write(line)
 
 def get_content_from_headings(list_of_headings, file):
     lines = file.readlines()
@@ -99,6 +106,7 @@ def regexp_based_heading_search():
                     list_of_headings.append(found)
 
     tree_of_headings = build_tree_from_headings(list_of_headings)
+#    print_tree(tree_of_headings)
     return tree_of_headings, list_of_headings
 
 def outlines_based_heading_search(toc):

@@ -12,13 +12,10 @@ list_of_contents = []
 
 os.system(PDFTOTEXTCONVERSION + filename )
 
-with open(os.path.splitext(filename)[0] + '.txt','r') as file:
-    with open('extracted_nospaces.txt','w') as file2:
-        for line in file.readlines():
-            if not line.isspace():
-                file2.write(line)
+remove_spaces_from_text_file(filename, NOSPACES_FILENAME)
 
 toc = reader.outlines
+
 if len(toc) == 0:
     tree_of_headings, list_of_headings = regexp_based_heading_search()
 else:
