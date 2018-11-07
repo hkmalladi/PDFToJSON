@@ -74,4 +74,3 @@ def detect_headings_using_summarization():
                             headings_set.add(sentence_str)
     return headings_set
 
-summarization_based_heading_search()

@@ -4,6 +4,7 @@ from configuration import *
 from utilities import *
 import os
 import anytree
+from extractive_summarization import *
 
 filename = FILENAME
 reader = PdfFileReader(open(filename, 'rb'))
