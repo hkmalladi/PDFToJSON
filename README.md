@@ -12,7 +12,11 @@ The utility is developed using Python 2.7 and will also work with Python 3 with 
 ### The utility has the following requirements:
 1. If the pdf file contains a well-formatted table of contents (that can be read by pyPDF2), it will be used.
 2. If there is no such table of contents, the user has to fill up the regular expression in the *configuration.py* file that helps in recognizing the table of contents.
-3. If no such regular expression is provided, it does extractive text summarization (Luhn's algorithm as implemented in sumy) to find concise statements that are most likely to be section headings.
+3. If no such regular expression is provided, it does extractive text summarization to find concise statements that are most likely to be section headings. In this case, it makes the following assumptions about headings to eliminate noise.
+    a. Headings are on new lines and do not end in a fullstop.
+    b. Headings are less than 50 characters long (configurable parameter).
+    c. Headings start with a capital letter.
+    d. Headings don't repeat.
 
 ### The limitations of the utility are:
 1. It requires the heading to be on a separate line and cannot process files where headings are embedded in the paragraph.
@@ -112,9 +116,7 @@ This utility works in 4 basic steps:
 3. Iterate over all the headings and search for them in the file. All the text following it, till the next heading is its corresponding content. Construct a heading - content map.
 4. Use the tree generated in step 2 and the map from step 3 to assemble the JSON.
 
-## Ongoing Work:
-
-The exact parameter tuning for the summarization based approach is still being carried out. For example, a summary of 450 statements precisely outputs the table of contents for the surface-pro-4-user-guide-EN.pdf file but a summary of 400 statements does not. Also, Luhn's algorithm appears to work better than TextRank or LexRank.
+At present, LSA based text summarization is used. A configuration parameter enables several other algorithms to be used. The threshold for the number of statements in the summary is set to 500. Out of these, only short, standalone sentences that don't end up in a fullstop are used as headings. On the surface-pro-4-user-guide-EN.pdf file, it demonstrated decent precision and recall.
 
 ## Work to be done:
 
