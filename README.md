@@ -7,7 +7,7 @@ This utility converts a pdf file into a JSON. This JSON follows the hierarchy of
 Change the input filename in configuration.py and run `python pdf_extraction.py`.
 
 The utility is developed using Python 2.7 and will also work with Python 3 with minimal changes. It uses the following libraries.
-`re, anytree, string. copy, PyPDF2, os, pdfminer`. It also uses the `pdftotext` utility from pdfminer to convert the pdf file into a text file.
+`re, sumy, anytree, string. copy, PyPDF2, os, pdfminer`. It also uses the `pdftotext` utility from pdfminer to convert the pdf file into a text file.
 
 ### The utility has the following requirements:
 1. If the pdf file contains a well-formatted table of contents (that can be read by pyPDF2), it will be used.
