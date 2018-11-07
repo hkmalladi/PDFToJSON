@@ -17,7 +17,10 @@ remove_spaces_from_text_file(filename, NOSPACES_FILENAME)
 toc = reader.outlines
 
 if len(toc) == 0:
-    tree_of_headings, list_of_headings = regexp_based_heading_search()
+    if SECOND_APPROACH_FOR_HEADING_EXTRACTION == 'regexp':
+        tree_of_headings, list_of_headings = regexp_based_heading_search()
+    elif SECOND_APPROACH_FOR_HEADING_EXTRACTION == 'summarization':
+        tree_of_headings, list_of_headings = summarization_based_heading_search()
 else:
     tree_of_headings, list_of_headings = outlines_based_heading_search(toc)
 
