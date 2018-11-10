@@ -33,12 +33,12 @@ The utility is developed using Python 2.7 and will also work with Python 3 with 
 When the tool is run on the surface-pro-4-user-guide-EN.pdf file, the following JSON output is generated:
 
 ```
-\[{"About this guide":\["This guide is designed to get you up and running with the key features of your new Surface Pro 4..."\]},{"Meet Surface Pro 4":\["Get acquainted with the features built in to your Surface Pro 4...."\]},{"Set up your Surface Pro 4":\["",{"CHARGE YOUR SURFACE PRO 4":\["    1. Connect the two parts of the power cord.
+[{"About this guide":["This guide is designed to get you up and running with the key features of your new Surface Pro 4..."]},{"Meet Surface Pro 4":["Get acquainted with the features built in to your Surface Pro 4...."]},{"Set up your Surface Pro 4":["",{"CHARGE YOUR SURFACE PRO 4":["    1. Connect the two parts of the power cord.
     2. Connect the power cord securely to the charging port.
-    3. Plug the power supply into an electrical outlet...."\]},
+    3. Plug the power supply into an electrical outlet...."]},
 ....
 
-,{"REPAIR":\["Before sending your Surface in for service, you can check out the Surface troubleshooting articles on Surface.com. If you can't solve the problem with troubleshooting, contact us through Surface.com. ...."\]},{"WARRANTY":\["For warranty info, see Surface warranty and Surface warranty documents on Surface.com."\]},{"SAFETY AND REGULATORY INFORMATION":\["See Safety and regulatory information on Surface.com."\]}\]}\]
+,{"REPAIR":["Before sending your Surface in for service, you can check out the Surface troubleshooting articles on Surface.com. If you can't solve the problem with troubleshooting, contact us through Surface.com. ...."]},{"WARRANTY":["For warranty info, see Surface warranty and Surface warranty documents on Surface.com."]},{"SAFETY AND REGULATORY INFORMATION":["See Safety and regulatory information on Surface.com."]}]}]
 ```
 
 The section-subsection hierarchy of the headings can be visualized using the following code snippet. This uses anytree's RenderTree function to render the tree.
