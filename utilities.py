@@ -1,9 +1,69 @@
 import re
 from configuration import *
-from anytree import Node, RenderTree
+from anytree import Node, RenderTree, PreOrderIter
 import string
 from copy import deepcopy
 import os
+import json
+
+def create_json(heading_content_dict, tree_of_headings):
+    list_of_nodes = []
+    final_dict = {}
+    inter_json = ''
+    json_str = ''
+    brace_count = 0
+    prev_node = None
+    for node in PreOrderIter(tree_of_headings):
+        if not node.parent is None :
+            if len(node.children) > 0:
+                if level_in_a_tree(node) == 1:
+                    for iter in range(0, brace_count):
+                        inter_json += ']}'
+                    if len(json_str) > 0:
+                        json_str += ','
+                    json_str += inter_json
+                    inter_json = ''
+                    brace_count = 0
+                elif level_in_a_tree(node) < level_in_a_tree(prev_node):
+                    brace_count -= 1
+                    inter_json += ']}'
+                prev_node = node
+                brace_count += 1
+                if len(inter_json) > 0 and inter_json[len(inter_json) - 1] <> ':':
+                    inter_json += ','
+                inter_json += '{"' + node.name + '":["' + heading_content_dict[node.name] +'"'
+            else:
+                if level_in_a_tree(node) == 1:
+                    for iter in range(0, brace_count):
+                        inter_json += ']}'
+                    if len(json_str) > 0:
+                        json_str += ','
+                    json_str +=  inter_json
+                    inter_json = ''
+                    brace_count = 0
+                elif level_in_a_tree(node) < level_in_a_tree(prev_node):
+                    brace_count -= 1
+                    inter_json += ']}'
+                prev_node = node
+                if len(inter_json) > 0 and inter_json[len(inter_json) - 1] <> ':':
+                    inter_json += ','
+                inter_json += '{"' + node.name + '":["' + heading_content_dict[node.name] + '"]}'
+    return '[' + json_str + ']'
+
+def level_in_a_tree(node):
+    if node is None:
+        return 9999
+    level = -1
+    while node is not None:
+        node = node.parent
+        level += 1
+    return level
+
+def create_heading_content_dict(list_of_contents, list_of_headings):
+    heading_content_dict = {}
+    for iter in range(0, len(list_of_headings)):
+        heading_content_dict[list_of_headings[iter].rstrip().lstrip()] = list_of_contents[iter]
+    return heading_content_dict
 
 def remove_spaces_from_text_file(filename, output_filename):
     with open(os.path.splitext(filename)[0] + '.txt','r') as file:
@@ -71,6 +131,7 @@ def get_content_from_headings(list_of_headings, file):
 
 
 def print_title_content_list(list_of_contents, list_of_headings):
+    print 'hello2'
     for iter in range(0,len(list_of_contents)):
         print list_of_headings[iter] + ' : ' + list_of_contents[iter]
 
