@@ -7,7 +7,7 @@ This utility converts a pdf file into a JSON. This JSON follows the hierarchy of
 Change the input filename in configuration.py and run `python pdf_extraction.py`.
 
 The utility is developed using Python 2.7 and will also work with Python 3 with minimal changes. It uses the following libraries.
-`re, sumy, anytree, string. copy, PyPDF2, os, pdfminer`. It also uses the `pdftotext` utility from pdfminer to convert the pdf file into a text file.
+`re, sumy, anytree, string. copy, PyPDF2, os, poppler`. It also uses the `pdftotext` utility from poppler to convert the pdf file into a text file.
 
 ### The utility has the following requirements:
 1. If the pdf file contains a well-formatted table of contents (that can be read by pyPDF2), it will be used.
@@ -28,7 +28,19 @@ The utility is developed using Python 2.7 and will also work with Python 3 with 
 3. The heading can have any preceeding or trailing spaces or new lines.
 4. The case of the content is well preserved.
 
-### Visualization
+### Output
+
+When the tool is run on the surface-pro-4-user-guide-EN.pdf file, the following JSON output is generated:
+
+```
+\[{"About this guide":\["This guide is designed to get you up and running with the key features of your new Surface Pro 4..."\]},{"Meet Surface Pro 4":\["Get acquainted with the features built in to your Surface Pro 4...."\]},{"Set up your Surface Pro 4":\["",{"CHARGE YOUR SURFACE PRO 4":\["    1. Connect the two parts of the power cord.
+    2. Connect the power cord securely to the charging port.
+    3. Plug the power supply into an electrical outlet...."\]},
+....
+
+,{"REPAIR":\["Before sending your Surface in for service, you can check out the Surface troubleshooting articles on Surface.com. If you can't solve the problem with troubleshooting, contact us through Surface.com. ...."\]},{"WARRANTY":\["For warranty info, see Surface warranty and Surface warranty documents on Surface.com."\]},{"SAFETY AND REGULATORY INFORMATION":\["See Safety and regulatory information on Surface.com."\]}\]}\]
+```
+
 The section-subsection hierarchy of the headings can be visualized using the following code snippet. This uses anytree's RenderTree function to render the tree.
 
 ```
@@ -54,58 +66,7 @@ ROOT
 │   │   ├── Desktop taskbar
 │   │   └── Make your battery last
 │   └── TOUCH, KEYBOARD, PEN, AND MOUSE
-├── Keep your Surface up to date
-├── Get online
-│   └── BROWSING TIPS
-├── Accounts and signing in
-│   ├── USE THE SIGN-IN SCREEN
-│   ├── USE WINDOWS HELLO TO SIGN IN
-│   └── SIGN OUT
-├── Get to know Windows 10
-│   ├── GO TO START
-│   ├── ACTION CENTER
-│   ├── SEARCH
-│   ├── TASK VIEW AND VIRTUAL DESKTOPS
-│   └── SETTINGS
-├── Type Cover for Surface Pro 4 keyboard and touchpad
-├── Storage and OneDrive
-│   └── ONEDRIVE
-│       └── Save files you're working on to OneDrive
-├── Surface Pen and OneNote
-│   ├── SURFACE PEN FEATURES
-│   ├── PAIR THE PEN WITH YOUR SURFACE
-│   ├── TRY OUT FEATURES BUILT IN TO THE TOP BUTTON OF THE PEN
-│   └── GET ACQUAINTED WITH ONENOTE
-│       └── Send a page or share a notebook
-├── Connect monitors, accessories, and other devices
-│   ├── SET UP YOUR WORKSPACE WITH SURFACE DOCK
-│   └── CONNECT OR PROJECT TO A MONITOR, SCREEN, OR OTHER DISPLAY
-├── Cameras and the Camera app
-│   └── VIEW PHOTOS AND VIDEOS
-├── Apps on your Surface Pro 4
-│   ├── THE SURFACE APP
-│   └── GET MORE APPS
-├── Personalization and settings
-│   ├── WINDOWS SETTINGS
-│   ├── ACTION CENTER
-│   ├── CORTANA
-│   ├── SURFACE APP
-│   ├── SYNC YOUR SETTINGS
-│   └── CHANGE SETTINGS IN WINDOWS APPS
-├── Accessibility
-│   ├── EASE OF ACCESS OPTIONS FOR SURFACE
-│   ├── OTHER OPTIONS
-│   └── CUSTOMIZE THE SIGN-IN SCREEN
-├── Care and cleaning
-│   ├── TOUCHSCREEN CARE
-│   ├── COVER AND KEYBOARD CARE
-│   └── POWER CORD CARE
-├── Registration, repair, and warranty
-│   ├── REGISTER YOUR SURFACE
-│   ├── REPAIR
-│   ├── WARRANTY
-│   └── SAFETY AND REGULATORY INFORMATION
-└── More help
+...
 ```
 
 ## Inner Workings:
@@ -118,6 +79,6 @@ This utility works in 4 basic steps:
 
 At present, LSA based text summarization is used. A configuration parameter enables several other algorithms to be used. The threshold for the number of statements in the summary is set to 500. Out of these, only short, standalone sentences that don't end up in a fullstop are used as headings. On the surface-pro-4-user-guide-EN.pdf file, it demonstrated decent precision and recall.
 
-## Work to be done:
+## Ongoing Work:
 
-The ultimate general case can be approached using a trained classifier. No such classifier exists that will work for this particular usecase. A classifier using naive bayes or KNN, trained on a LaTeX-generated pdf document dataset (using the pyPDF2-extracted headings) can be used to train the model. The fact that pyPDF2 can effectively identify headings in LaTeX-generated documents greatly simplifies data preprocessing efforts.
+A naive bayes classifier is being trained using a 200 document dataset from arXiv. This dataset has been acquired using a scraper code from this repository. As the arXiv documents are well formatted, their headings and contents can easily be extracted using this tool. Features such as the presence of a fullstop, sentence length in characters and words, number of vowels in the sentence and the presence of numbers are used to train the classifier. 
