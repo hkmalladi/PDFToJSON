@@ -12,11 +12,7 @@ The utility is developed using Python 2.7 and will also work with Python 3 with 
 ### The utility has the following requirements:
 1. If the pdf file contains a well-formatted table of contents (that can be read by pyPDF2), it will be used.
 2. If there is no such table of contents, the user has to fill up the regular expression in the *configuration.py* file that helps in recognizing the table of contents.
-3. If no such regular expression is provided, it does extractive text summarization to find concise statements that are most likely to be section headings. In this case, it makes the following assumptions about headings to eliminate noise.
-    a. Headings are on new lines and do not end in a fullstop.
-    b. Headings are less than 50 characters long (configurable parameter).
-    c. Headings start with a capital letter.
-    d. Headings don't repeat.
+3. If no such regular expression is provided, it uses a naive bayes classifier statements that are most likely to be section headings. 
 
 ### The limitations of the utility are:
 1. It requires the heading to be on a separate line and cannot process files where headings are embedded in the paragraph.
@@ -77,8 +73,4 @@ This utility works in 4 basic steps:
 3. Iterate over all the headings and search for them in the file. All the text following it, till the next heading is its corresponding content. Construct a heading - content map.
 4. Use the tree generated in step 2 and the map from step 3 to assemble the JSON.
 
-At present, LSA based text summarization is used. A configuration parameter enables several other algorithms to be used. The threshold for the number of statements in the summary is set to 500. Out of these, only short, standalone sentences that don't end up in a fullstop are used as headings. On the surface-pro-4-user-guide-EN.pdf file, it demonstrated decent precision and recall.
-
-## Ongoing Work:
-
-A naive bayes classifier is being trained using a 200 document dataset from arXiv. This dataset has been acquired using a scraper code from this repository. As the arXiv documents are well formatted, their headings and contents can easily be extracted using this tool. Features such as the presence of a fullstop, sentence length in characters and words, number of vowels in the sentence and the presence of numbers are used to train the classifier. 
+A naive bayes classifier is used to recognize headings in the general case when the table of contents cannot be extracted through any other way. This classifier uses the following features: `no .of chars, no. of words,no. of vowels,no. of punctuations, first_letter_caps`. This classifier is trained on about 80,000 lines of pdf text from 200 pdf documents scraped using the code in the dataset_generation.py file. The curated dataset is present in dataset.csv.
