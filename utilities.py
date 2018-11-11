@@ -5,6 +5,7 @@ import string
 from copy import deepcopy
 import os
 import json
+from dataset_generation import *
 
 def create_json(heading_content_dict, tree_of_headings):
     list_of_nodes = []
@@ -192,3 +193,18 @@ def generate_heading_tree_from_outlines(toc, root, list_of_headings):
 def print_tree(tree):
     for pre, fill, node in RenderTree(tree):
          print("%s%s" % (pre, node.name))
+
+def classification_based_heading_search():
+    filename = NOSPACES_FILENAME
+    f = open(filename, 'r')
+    np_array, X, Y = convert_to_np_array()
+    model = train_model(X,Y)
+    lines = f.readlines()
+    list_of_headings = []
+    root = Node('ROOT')
+    for line in lines:
+        heading_or_content = predict_headings(line, model)
+        if heading_or_content == 1:
+            list_of_headings.append(line)
+            node = Node(line.rstrip().lstrip(), root)
+    return root, list_of_headings

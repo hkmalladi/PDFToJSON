@@ -8,6 +8,7 @@ from extractive_summarization import *
 
 
 filename = FILENAME
+
 reader = PdfFileReader(open(filename, 'rb'))
 
 list_of_contents = []
@@ -20,7 +21,8 @@ toc = reader.outlines
 
 if len(toc) == 0:
     if TOC_REGEXP == '':
-        tree_of_headings, list_of_headings = summarization_based_heading_search()
+        tree_of_headings, list_of_headings = classification_based_heading_search()
+#        tree_of_headings, list_of_headings = summarization_based_heading_search()
     else:
         tree_of_headings, list_of_headings = regexp_based_heading_search()
 else:
