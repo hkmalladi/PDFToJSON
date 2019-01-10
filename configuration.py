@@ -1,4 +1,4 @@
-FILENAME = "surface-pro-4-user-guide-EN.pdf"
+#FILENAME = "surface-pro-4-user-guide-EN.pdf"
 #FILENAME = "1707.09725.pdf"
 NOSPACES_FILENAME = 'extracted_nospaces.txt'
 NOSPACES_FILENAME_TRIMMED = 'extracted_nospaces_trimmed.txt'

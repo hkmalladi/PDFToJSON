@@ -71,6 +71,7 @@ def remove_spaces_from_text_file(filename, output_filename):
         with open(output_filename,'w') as file2:
             for line in file.readlines():
                 if not line.isspace():
+                    line.encode('ascii', 'ignore')
                     file2.write(line)
 
 def get_content_from_headings(list_of_headings, file):
@@ -179,10 +180,19 @@ def outlines_based_heading_search(toc):
 #    print_tree(tree_of_headings)
     return tree_of_headings, list_of_headings
 
+def remove_non_ascii_from_list(list):
+    printable = set(string.printable)
+    list_new = []
+    for element in list:
+        element_new = filter(lambda x: x in printable, element)
+        list_new.append(element_new)
+    return list_new
+
 def generate_heading_tree_from_outlines(toc, root, list_of_headings):
+    printable = set(string.printable)
     for iter in range(0, len(toc)):
         if not isinstance(toc[iter], list): # Create a node for each section heading.
-            node = Node(toc[iter]['/Title'].rstrip().lstrip(), root)
+            node = Node(filter(lambda x: x in printable, toc[iter]['/Title'].rstrip().lstrip()), root)
             list_of_headings.append(toc[iter]['/Title'])
         else: # If there are a list of headings, they are subheadings of the previous heading. Recur on that.
             node, list_of_headings_output = generate_heading_tree_from_outlines(toc[iter], node, list_of_headings)
@@ -208,3 +218,25 @@ def classification_based_heading_search():
             list_of_headings.append(line)
             node = Node(line.rstrip().lstrip(), root)
     return root, list_of_headings
+
+
+def get_pathful_dict(heading_content_dict, tree_of_headings):
+    key_list = [k  for  k in  heading_content_dict.keys()]
+    printable = set(string.printable)
+    list_of_node_names = [node.name for node in PreOrderIter(tree_of_headings)]
+    list_of_nodes = [node for node in PreOrderIter(tree_of_headings)]
+    list_of_contents = []
+    pathful_dict = {}
+    for node in PreOrderIter(tree_of_headings):
+        if node.name <> 'ROOT':
+            list_of_contents.append(heading_content_dict[node.name])
+    for val in range(0,len(list_of_contents)):
+        pathful_dict[compute_ancestry(list_of_nodes[val + 1])] =  list_of_contents[val]
+    return pathful_dict
+
+def compute_ancestry(node):
+    if node.parent.name <> 'ROOT':
+        parent = compute_ancestry(node.parent)
+        return parent + ' | ' + node.name
+    else:
+        return node.name

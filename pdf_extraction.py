@@ -1,4 +1,5 @@
 import re
+import csv
 from PyPDF2 import PdfFileReader
 from configuration import *
 from utilities import *
@@ -28,12 +29,22 @@ if len(toc) == 0:
 else:
     tree_of_headings, list_of_headings = outlines_based_heading_search(toc)
 
+list_of_headings = remove_non_ascii_from_list(list_of_headings)
+
 with open(NOSPACES_FILENAME,'r') as file:
     list_of_contents = get_content_from_headings(list_of_headings, file)
 
 heading_content_dict = create_heading_content_dict(list_of_contents, list_of_headings)
 
 json_of_pdf = create_json(heading_content_dict, tree_of_headings)
+
+pathful_dict = get_pathful_dict(heading_content_dict, tree_of_headings)
+
+w = csv.writer(open("output.csv", "w"))
+for key, val in pathful_dict.items():
+    w.writerow([key, val])
+
+#print pathful_dict
 
 print json_of_pdf
 
